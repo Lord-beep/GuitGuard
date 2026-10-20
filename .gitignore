@@ -1,0 +1,21 @@
+# Pasta de distribuição (compilação)
+dist/
+
+# Ficheiros e pastas gerados pelo Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Ficheiros e pastas gerados pelo Node.js (se aplicável)
+node_modules/
+npm-debug.log*
+
+# Ficheiros do sistema operativo e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
