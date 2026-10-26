@@ -1,111 +1,213 @@
-# 🚀 GitGuard — Scanner Seguro
+# 🛡️ GitGuard (SafeGit)
 
-O **GitGuard** é uma ferramenta de triagem de segurança com interface gráfica concebida para analisar repositórios Git públicos antes de os executar ou inspecionar localmente. A aplicação efetua o descarregamento isolado do código-fonte e submete-o a múltiplos motores de análise para identificar potenciais ameaças.
+O **GitGuard** é uma aplicação para Windows desenvolvida em Python que permite realizar uma triagem de segurança de repositórios Git públicos antes de os utilizar. 
+
+A aplicação disponibiliza uma interface gráfica baseada em Tkinter e combina análise estática, Microsoft Defender, VirusTotal e regras YARA para identificar possíveis indicadores de risco.
+
+> ⚠️ **Aviso de segurança:** O GitGuard é uma ferramenta de triagem, não um antivírus completo nem uma sandbox. A ausência de deteções não garante que um repositório seja seguro.
 
 ---
 
 ## ✨ Funcionalidades
 
-- 🛡️ **Clonagem segura**: Clona repositórios públicos via HTTPS para uma pasta isolada, sem descarregar submódulos e sem instalar dependências.
-- 🔍 **Análise estática**: Inspeciona o código do repositório em busca de padrões e comportamentos de risco.
-- 💻 **Integração com Windows Defender**: Realiza varreduras locais recorrendo ao motor do Windows Defender.
-- 🌐 **Inspecção VirusTotal**: Suporte opcional para verificação de ficheiros através da API do VirusTotal.
-- 🎯 **Regras YARA**: Utilização do ficheiro de regras `regras.yar` para deteção de assinaturas maliciosas.
-- 📊 **Registo em tempo real**: Exibição detalhada de alertas, estados de verificação e diagnósticos finais numa interface moderna.
-- 🛑 **Controlo de execução**: Possibilidade de interromper o processo de clonagem e verificação a qualquer momento.
+* 🖥️ **Interface gráfica:** construída com Tkinter e TTK.
+* 🔗 **Integração com GitHub:** clonagem de repositórios públicos através de HTTPS.
+* 🔍 **Análise estática:** identificação de padrões potencialmente suspeitos.
+* 🛡️ **Microsoft Defender:** análise antimalware no Windows.
+* 🌐 **VirusTotal API v3:** consulta de hashes SHA-256 sem envio automático do conteúdo dos ficheiros.
+* 🧬 **YARA:** análise com regras personalizadas.
+* 🧵 **Interface responsiva:** operações demoradas executadas numa thread de trabalho.
+* ⛔ **Cancelamento:** possibilidade de solicitar a interrupção de uma análise.
+* 📋 **Registo de resultados:** apresentação do estado de cada motor de análise.
+* 🚫 **Proteção dos ficheiros existentes:** evita utilizar um destino de clonagem já existente.
 
 ---
 
 ## 🛠️ Tecnologias
 
 | Tecnologia | Utilização |
-|---|---|
-| Python | Linguagem de programação principal |
-| Tkinter / ttk | Interface gráfica do utilizador |
-| YARA | Motor de deteção baseado em regras de assinaturas |
-| Windows Defender | Verificação de segurança local no sistema operativo |
-| VirusTotal API | Serviço externo de verificação de ameaças na nuvem |
+| :--- | :--- |
+| **Python 3** | Linguagem principal |
+| **Tkinter / TTK** | Interface gráfica |
+| **Git** | Clonagem de repositórios |
+| **GitPython** | Integração com Git |
+| **yara-python** | Análise com regras YARA |
+| **VirusTotal API v3** | Consulta de hashes SHA-256 |
+| **Microsoft Defender** | Análise antimalware |
+| **PyInstaller** | Criação do executável |
 
 ---
 
-## ⚙️ Instalação
+## 📥 Instalação
 
-1. Garanta que tem o Python instalado no sistema operativo.
-2. Certifique-se de que os ficheiros do projeto se encontram na mesma pasta:
-   - `app.py`
-   - `core.py`
-   - `regras.yar`
+### Opção 1 — Utilizar o executável Windows
+1. Acede à página de *Releases* do GitGuard.
+2. Descarrega o executável, caso esteja disponível.
+3. Guarda o ficheiro no teu computador.
+4. Executa `GitGuard.exe`.
 
----
+*Nota: Se ainda não existir um executável na secção Releases, utiliza a instalação a partir do código-fonte descrita abaixo.*
 
-## ▶️ Execução
+> 💡 O Windows Defender ou outro software de segurança pode apresentar avisos sobre executáveis desconhecidos. Confirma sempre a origem do ficheiro antes de o executar.
 
-Para iniciar a aplicação gráfica, execute no terminal:
+### Opção 2 — Executar a partir do código-fonte
 
+#### Pré-requisitos
+* Windows 10 ou Windows 11.
+* Python 3.10 ou superior.
+* Git instalado e disponível no PATH.
+* Ligação à Internet.
+
+#### 1. Clonar o projeto
+Abre o CMD ou Git Bash e executa:
+```bash
+git clone https://github.com/Lord-beep/SafeGuit.git
+cd SafeGuit
+```
+
+#### 2. Criar um ambiente virtual
+```bash
+python -m venv .venv
+```
+Ativa-o no CMD:
+```cmd
+.venv\Scripts\activate
+```
+
+#### 3. Instalar as dependências
+```bash
+python -m pip install --upgrade pip
+python -m pip install GitPython yara-python
+```
+
+#### 4. Iniciar a aplicação
 ```bash
 python app.py
 ```
+A interface gráfica do GitGuard deverá abrir numa nova janela.
 
 ---
 
-## 📖 Como utilizar
+## ▶️ Como utilizar
 
-1. Inicie a aplicação `GitGuard`.
-2. No campo **URL HTTPS**, insira a hiperligação de um repositório público do GitHub.
-3. No campo **Chave API VirusTotal** (opcional), insira a sua chave caso pretenda ativar a verificação na nuvem.
-4. Clique em **Analisar repositório**.
-5. Acompanhe o progresso e consulte os resultados no painel **Registo de segurança**.
+### 1. Introduzir o URL
+No campo do repositório, introduz o endereço HTTPS de um repositório público do GitHub.
+
+**Exemplo:**
+```text
+https://github.com/octocat/Spoon-Knife
+```
+Clica em **Analisar repositório** para iniciar a clonagem e a análise.
+
+### 2. Configurar o VirusTotal (opcional)
+Para obter uma chave API:
+1. Acede ao VirusTotal.
+2. Cria uma conta ou inicia sessão.
+3. Consulta a tua chave em *My API Key*.
+4. Copia a chave para o campo correspondente da aplicação.
+
+> 🔒 O GitGuard consulta hashes SHA-256. Não envia automaticamente o conteúdo dos ficheiros para o VirusTotal. **Nunca publiques a tua chave API no GitHub nem a incluas diretamente no código-fonte.**
+
+### 3. Consultar os resultados
+O GitGuard apresenta o resultado de cada motor no registo de segurança.
+
+| Estado | Significado |
+| :--- | :--- |
+| **CLEAN** | O motor não reportou deteções segundo os critérios utilizados. |
+| **SUSPICIOUS** | Foram encontrados padrões que merecem investigação. |
+| **THREAT** | Um motor reportou uma possível ameaça. |
+| **UNKNOWN** | A análise não pôde ser concluída ou não existem dados suficientes. |
+
+O resultado global pode ser:
+* 🔴 **SUSPEITO — NÃO EXECUTAR:** foi encontrada uma deteção ou um indicador suspeito.
+* 🟢 **SEM DETEÇÕES:** os motores executados não reportaram deteções, mas isso não garante segurança.
+* 🟡 **INCONCLUSIVO:** pelo menos um motor não conseguiu concluir a análise.
+
+*Nota: Um ficheiro cujo hash não é conhecido pelo VirusTotal não deve ser considerado automaticamente seguro ou malicioso.*
+
+### 4. Cancelar uma análise
+Utiliza o botão **Cancelar** para solicitar a interrupção da operação atual. O cancelamento pode não ser imediato.
+
+---
+
+## 🧬 Regras YARA
+
+O ficheiro `regras.yar` contém as regras utilizadas pelo motor YARA.
+
+* As regras têm de ser válidas para poderem ser compiladas.
+* Se o ficheiro estiver ausente ou não puder ser compilado, a análise deve ser considerada inconclusiva.
+* As regras podem gerar falsos positivos e não detetam todas as ameaças.
+* Uma regra de demonstração, como `GitGuard_Test_Marker`, serve apenas para testar a integração.
+* Podes adicionar regras próprias ou de fontes reconhecidas, respeitando as respetivas licenças.
 
 ---
 
 ## 📁 Estrutura do projeto
 
 ```text
-.
+SafeGuit/
 ├── app.py
 ├── core.py
 ├── regras.yar
+├── commit.ico
+├── README.md
+├── .gitignore
 └── Projetos_Descarregados/
 ```
 
----
+| Ficheiro ou pasta | Descrição |
+| :--- | :--- |
+| `app.py` | Interface gráfica Tkinter |
+| `core.py` | Lógica de clonagem e análise |
+| `regras.yar` | Regras de deteção YARA |
+| `commit.ico` | Ícone da aplicação |
+| `README.md` | Documentação do projeto |
+| `.gitignore` | Ficheiros excluídos do Git |
+| `Projetos_Descarregados/` | Repositórios descarregados para análise |
 
-## 🧠 Como funciona
-
-O GitGuard executa a verificação por etapas, garantindo que o código descarregado não é executado nem instalado durante o processo:
-
-```text
-URL HTTPS do GitHub
-        │
-        ▼
-Clonagem do Repositório
-        │
-        ├──────────► Análise Estática
-        ├──────────► Windows Defender
-        ├──────────► VirusTotal (Chave API opcional)
-        └──────────► Regras YARA (regras.yar)
-        │
-        ▼
-Resultado de Triagem no Registo
-```
+> ⚠️ A pasta `Projetos_Descarregados/` é criada durante a utilização e não deve ser publicada no repositório.
 
 ---
 
-## 🔒 Segurança
+## 📦 Criar um executável Windows
 
-- O GitGuard **não executa intencionalmente** o código do repositório nem instala pacotes ou dependências do projeto analisado.
-- Os repositórios analisados são guardados na pasta local `Projetos_Descarregados/`.
-- A chave de API do VirusTotal é inserida através de um campo de texto mascarado.
-
----
-
-## 📦 Versão portátil / Build
-
-É possível gerar uma versão executável autónoma da aplicação recorrendo ao PyInstaller:
-
+### 1. Instalar o PyInstaller
+Com o ambiente virtual ativado:
 ```bash
-pyinstaller gitguard.py
+python -m pip install pyinstaller
 ```
+
+### 2. Compilar a aplicação
+Na pasta do projeto, executa:
+```bash
+python -m PyInstaller --clean --noconfirm --windowed --name GitGuard --collect-all yara --add-data "regras.yar;." --icon commit.ico app.py
+```
+
+Por predefinição, o PyInstaller cria uma pasta de distribuição. O executável deverá ficar em:
+```text
+dist/GitGuard/GitGuard.exe
+```
+
+Para gerar um único ficheiro executável, acrescenta `--onefile` ao comando. O resultado deverá ficar em:
+```text
+dist/GitGuard.exe
+```
+
+> ⚙️ **Importante:** antes de distribuir o executável, confirma que `core.py` resolve corretamente o caminho de `regras.yar` quando a aplicação está empacotada. Testa também a clonagem, a análise YARA e a disponibilidade do Git num computador Windows diferente.
+
+---
+
+## 🔐 Limitações e segurança
+
+* O GitGuard não é um antivírus completo nem uma sandbox.
+* A análise estática pode gerar falsos positivos e não identificar ameaças desconhecidas.
+* O Microsoft Defender depende da disponibilidade e configuração do sistema.
+* O VirusTotal pode não ter resultados para determinados hashes e está sujeito a limites de utilização.
+* A eficácia do YARA depende das regras utilizadas.
+* Não são instaladas automaticamente as dependências do repositório analisado.
+* **Não executes código desconhecido apenas porque a análise terminou sem deteções.**
+* Mantém as chaves API privadas e fora do controlo de versões.
+
 ---
 
 ## 👤 Autor
@@ -116,4 +218,4 @@ pyinstaller gitguard.py
 
 ## ⭐ Projeto
 
-Se este projeto foi útil para a triagem e análise de segurança dos seus repositórios, considere dar uma estrela no GitHub!
+Se este projeto for útil, considera deixar uma estrela no repositório.
