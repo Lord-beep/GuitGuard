@@ -19,3 +19,12 @@ npm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# GitGuard
+Projetos_Descarregados/
+build/
+*.spec
+
+# Ficheiros de configuração e registos
+.env.*
+*.log
